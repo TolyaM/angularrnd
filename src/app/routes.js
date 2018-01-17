@@ -6,9 +6,12 @@ export default function routes($stateProvider, $locationProvider,  $urlRouterPro
             url: '/login',
             template: '<login>',
             controller: ['$scope', 'API_BASE', '$http', '$location', 'store',
-                function ($scope, API_BASE, $http, $location, store) {
+                function ($scope, API_BASE, $http, $location, store, ) {
                     if(store.get('access_token')){
                         $location.path('/news');
+                    }
+                    else{
+                        $location.path('/login');
                     }
                 }
             ]

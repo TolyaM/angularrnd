@@ -25,7 +25,7 @@ class LoginCtrl {
                         })
                     });
                 }).catch((result, status) => {
-                    if (result.status === 401) {
+                    if (result.status === 401 || result.status === 400) {
                         $scope.errorMessage = 'Please, check your login and password.';
                     };
                 });
