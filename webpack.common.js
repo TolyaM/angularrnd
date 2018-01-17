@@ -9,12 +9,6 @@ module.exports = {
         rules: [
             {
                 // Compiles ES6 and ES7 into ES5 code
-                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-                use: 'file-loader',
-                exclude: /node_modules/
-            },
-            {
-                // Compiles ES6 and ES7 into ES5 code
                 test: /\.js$/,
                 use: 'babel-loader',
                 exclude: /node_modules/
@@ -26,17 +20,17 @@ module.exports = {
                     fallback: 'style-loader',
                     use: ['css-loader',
                         { loader: 'postcss-loader', options: {
-                            plugins: (loader) => [
-                                autoprefixer({
-                                    browsers: [
-                                        '>1%',
-                                        'last 4 versions',
-                                        'Firefox ESR',
-                                        'not ie < 9' // React doesn't support IE8 anyway
-                                    ]
-                                })
-                            ]}
-                    }, 'sass-loader']
+                                plugins: (loader) => [
+                                    autoprefixer({
+                                        browsers: [
+                                            '>1%',
+                                            'last 4 versions',
+                                            'Firefox ESR',
+                                            'not ie < 9' // React doesn't support IE8 anyway
+                                        ]
+                                    })
+                                ]}
+                        }, 'sass-loader']
                 })
             },
             {
@@ -46,16 +40,16 @@ module.exports = {
                     fallback: 'style-loader',
                     use: ['css-loader',
                         { loader: 'postcss-loader', options: {
-                            plugins: (loader) => [
-                            autoprefixer({
-                                browsers: [
-                                    '>1%',
-                                    'last 4 versions',
-                                    'Firefox ESR',
-                                    'not ie < 9' // React doesn't support IE8 anyway
-                                ]
-                            })
-                        ]}
+                                plugins: (loader) => [
+                                    autoprefixer({
+                                        browsers: [
+                                            '>1%',
+                                            'last 4 versions',
+                                            'Firefox ESR',
+                                            'not ie < 9' // React doesn't support IE8 anyway
+                                        ]
+                                    })
+                                ]}
                         }]
                 })
             },
@@ -66,11 +60,16 @@ module.exports = {
                     /\.(js|jsx)$/,
                     /\.css$/,
                     /\.json$/,
-                    /\.(sass|scss)$/
-                    /*/\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/*/
+                    /\.(sass|scss)$/,
+                    /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/
 
                 ],
                 loader: 'raw-loader'
+            },
+            // add loader for images and fronts
+            {
+                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
+                loader: 'file-loader'
             }
         ]
     },

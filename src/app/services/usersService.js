@@ -1,13 +1,17 @@
-var usersFactory = function ($http, $httpParamSerializer, API_USERS) {
+var usersFactory = function ($http, $httpParamSerializer, API_USERS, store, tokenService) {
     return {
-        findAll: function(callback) {
-            return $http.get(API_USERS + '/api/users').then(callback);
-        }/*,
-        save: function (employee) {
-            return $http.post(API_BASE + '/api/users', { firstName: employee.firstName, lastName: employee.lastName, age: employee.age });
-        }*/
+        findAll: function() {
+            return $http.get(tokenService.concatToken(API_USERS + '/api/users'));
+        },
+        findByID: function (id) {
+            return $http.get(tokenService.concatToken(API_USERS + '/api/user/' + id));
+        },
+        updateUser: function (user, id) {
+            return $http.put(tokenService.concatToken(API_USERS + '/api/user/' + id, user));
+        }
     };
-}
-usersFactory.$inject = ['$http', '$httpParamSerializer', 'API_USERS']
+};
+
+usersFactory.$inject = ['$http', '$httpParamSerializer', 'API_USERS', 'store', 'tokenService'];
 
 export default usersFactory

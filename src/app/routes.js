@@ -1,10 +1,17 @@
 routes.$inject = ['$stateProvider','$locationProvider', '$urlRouterProvider','$httpProvider'];
-export default function routes($stateProvider, $locationProvider,  $urlRouterProvider,$httpProvider) {
+export default function routes($stateProvider, $locationProvider,  $urlRouterProvider, $httpProvider) {
     $stateProvider
         .state({
             name: 'login',
             url: '/login',
             template: '<login>',
+            controller: ['$scope', 'API_BASE', '$http', '$location', 'store',
+                function ($scope, API_BASE, $http, $location, store) {
+                    if(store.get('access_token')){
+                        $location.path('/news');
+                    }
+                }
+            ]
         })
 
         .state({
@@ -16,21 +23,28 @@ export default function routes($stateProvider, $locationProvider,  $urlRouterPro
 
         .state({
             name:'user',
-            url:'/user',
+            url:'/user/:userId',
             template: '<user>',
             auth: true
         })
 
-        .state({
-            name:'news',
+        .state('news',{
+            name:'news/:newsId',
             url:'/news',
             template: '<news>',
             auth: true
         })
 
+        .state('newsadd',{
+            name:'newsadd',
+            url:'/newsadd',
+            template: '<newsadd>',
+            auth: true
+        })
+
         .state({
             name:'newsedit',
-            url:'/newsedit',
+            url:'/newsedit/:newseditId',
             template: '<newsedit>',
             auth: true
         })
@@ -40,25 +54,20 @@ export default function routes($stateProvider, $locationProvider,  $urlRouterPro
             template: ' ',
             controller: ['$scope', 'API_BASE', '$http', '$location', 'store', '$rootScope',
                 function ($scope, API_BASE, $http, $location, store, $rootScope) {
-                    // Remove token from local storage
                     store.remove('access_token');
-                    // Invalidate token on backend side
-                    $http.get(API_BASE + '/oauth/revoke-token');
-                    $rootScope.loggedIn = false;
+                    store.remove('employee');
+                    store.remove('current_data');
                     $location.path('/login');
                 }
             ]
         });
-        $httpProvider.interceptors.push('AuthenticationHttpInterceptor')
-
 
     $urlRouterProvider.otherwise('/login');
 
-
-        $urlRouterProvider
-            .when('/', ['$state', function ($state) {
-              $state.go('login');
-      }]).otherwise('/login');
+    $urlRouterProvider
+        .when('/', ['$state', function ($state) {
+            $state.go('login');
+        }]).otherwise('/login');
 
 
 /*    $locationProvider.html5Mode({
